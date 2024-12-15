@@ -41,8 +41,16 @@ class LoginScreen extends StatelessWidget {
                     height: 10,
                   ),
                   TextFormField(
+                    obscureText: cubit.isShow,
                     controller: cubit.passwordController,
                     decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              cubit.showPassword();
+                            },
+                            icon: Icon(!cubit.isShow
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined)),
                         hintText: "Pass",
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10))),

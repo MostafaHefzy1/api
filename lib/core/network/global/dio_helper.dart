@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:project1/core/network/local/shared_preference.dart';
 
 class DioHelper {
   static Dio? dio;
@@ -9,10 +10,10 @@ class DioHelper {
     dio = Dio(BaseOptions(
       baseUrl: "https://todo.iraqsapp.com/",
       receiveDataWhenStatusError: true,
-      // headers: {
-      //   "Authorization":
-      //       'Bearer ${preferenceHelper.getData(key: "token")}',
-      // }
+      headers: {
+        "Authorization":
+            'Bearer ${CacheHelper.getData(key: "token")}',
+      }
     ));
 
     // customization
@@ -34,4 +35,7 @@ class DioHelper {
       {required String endPoint, required dynamic data}) async {
     return await dio!.post(endPoint, data: data);
   }
+
+
+  
 }

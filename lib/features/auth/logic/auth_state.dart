@@ -9,3 +9,7 @@ final class AuthInitial extends AuthState {}
 final class LoginLoadingState  extends AuthState {}
 final class LoginSuccessState  extends AuthState {}
 final class LoginFailedState  extends AuthState {}
+
+
+
+final class ChangeISShowPassword extends AuthState {}

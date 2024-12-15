@@ -4,7 +4,7 @@ import 'package:project1/features/auth/data/web_services/auth_web_services.dart'
 
 class AuthRepository {
   final AuthWebServices _authWebServices;
-
+  
   AuthRepository(this._authWebServices);
 
   Future<LoginReponse> login(LoginRequestBody loginRequestBody) async {

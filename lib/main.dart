@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/core/bloc_observer/bloc_observer.dart';
-import 'package:project1/core/data/global/dio_helper.dart';
-import 'package:project1/features/auth/data/repository/auth_repository.dart';
-import 'package:project1/features/auth/data/web_services/auth_web_services.dart';
+import 'package:project1/core/network/global/dio_helper.dart';
+import 'package:project1/core/network/local/shared_preference.dart';
+import 'package:project1/core/services/services_locator.dart';
 import 'package:project1/features/auth/logic/auth_cubit.dart';
 import 'package:project1/features/auth/ui/login_screen.dart';
+import 'package:project1/features/home/logic/home_cubit.dart';
+import 'package:project1/features/home/ui/list_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await SharedPreferenceHelper.initSharedPreferenceHelper();
+
+  initGetIt();
+  await CacheHelper.init();
   await DioHelper.initDioHelper();
 
   Bloc.observer = MyBlocObserver();
@@ -24,9 +28,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(
-            create: (BuildContext context) =>
-                AuthCubit(AuthRepository(AuthWebServices()))),
+        BlocProvider(create: (BuildContext context) => sl<AuthCubit>()),
+        BlocProvider(
+            create: (BuildContext context) => sl<HomeCubit>()..paginationFun()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -34,7 +38,9 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: LoginScreen(),
+        home: CacheHelper.getData(key: "token") == null
+            ? LoginScreen()
+            : ListScreen(),
       ),
     );
   }
